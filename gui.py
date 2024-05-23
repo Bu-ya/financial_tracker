@@ -3,6 +3,7 @@ from tkinter import simpledialog, messagebox, Toplevel, Checkbutton, IntVar
 from models import IncomeSource, ExpenseSource, Profile
 from data_storage import save_income_source, save_expense_source, save_profile, load_profile, load_income_source, load_expense_source, get_all_income_sources, get_all_expense_sources
 from report_generation import generate_report
+import os
 
 class Application(tk.Tk):
     def __init__(self):
@@ -23,6 +24,18 @@ class Application(tk.Tk):
 
         self.period_button = tk.Button(self, text="Set Period and Generate Report", command=self.set_period)
         self.period_button.pack()
+
+
+    def clear_directory(self, folder):
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+            except Exception as e:
+                print(e)
+
+
 
     def add_income_source(self):
         name = simpledialog.askstring("Input", "Enter income source name:")

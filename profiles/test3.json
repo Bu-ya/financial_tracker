@@ -1,0 +1,11 @@
+{
+    "name": "test3",
+    "description": "test3",
+    "income_sources": [
+        "100000",
+        "Зарплата"
+    ],
+    "expense_sources": [
+        "test2"
+    ]
+}
