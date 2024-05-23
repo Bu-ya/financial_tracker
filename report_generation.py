@@ -62,3 +62,26 @@ def save_report(day_records, profile_name, start_date, end_date):
     df = pd.DataFrame(report_data)
     excel_path = f"{folder}/{profile_name}_{start_date.strftime('%Y%m%d')}_{end_date.strftime('%Y%m%d')}.xlsx"
     df.to_excel(excel_path, index=False)
+
+
+def load_report(json_path):
+    with open(json_path, 'r', encoding='utf-8') as f:
+        report_data = json.load(f)
+    
+    dates = [datetime.strptime(record['date'], "%Y-%m-%d") for record in report_data]
+    balances = [record['balance'] for record in report_data]
+    incomes = [sum(income['amount'] for income in record['income']) for record in report_data]
+    expenses = [sum(expense['amount'] for expense in record['expenses']) for record in report_data]
+
+    plt.figure(figsize=(10, 5))
+
+    plt.plot(dates, balances, label="Balance", color='green' if all(balance >= 0 for balance in balances) else 'red')
+    plt.plot(dates, incomes, label="Total Income")
+    plt.plot(dates, expenses, label="Total Expense")
+
+    plt.xlabel("Date")
+    plt.ylabel("Amount")
+    plt.legend()
+    plt.show()
+
+
